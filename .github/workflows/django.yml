@@ -18,7 +18,9 @@ jobs:
       - name: Clone code-star
         run: |
           git clone https://github.com/youzarsiph/code-star
+          git clone https://github.com/youzarsiph/code-star-demo
           mv code-star code_star
+          mv code-star-demo code_star_demo
           
       - name: Install Dependencies
         run: |
