@@ -10,6 +10,6 @@ app_name = "code-star"
 
 urlpatterns = [
     path("", HomeView.as_view(), name="home"),
-    path("chat/", include("code_star_demo.chats.urls")),
-    path("completions/", include("code_star_demo.completions.urls")),
+    path("chat/", include("code_star_demo.chat.urls")),
+    path("completions/", include("code_star_demo.completion.urls")),
 ]
