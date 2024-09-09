@@ -30,6 +30,7 @@ jobs:
         run: |
           python -m django startproject mysite
           cp -r code_star mysite/code_star
+          cp -r code_star_demo mysite/code_star_demo
           cd mysite
           echo "INSTALLED_APPS = ['code_star', 'code_star.chats', 'code_star.completions', 'daphne', 'channels', 'rest_framework', 'django.contrib.auth', 'django.contrib.contenttypes', 'django.contrib.sessions', 'django.contrib.staticfiles']" >> mysite/settings.py
 
