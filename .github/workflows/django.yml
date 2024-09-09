@@ -36,7 +36,7 @@ jobs:
       - name: Configure URLConf and Routing
         run: |
           cd mysite
-          echo "from django.urls import include" >> mysite/urls.py
+          echo "from django.urls import path, include" > mysite/urls.py
           echo "urlpatterns = [path('', include('code_star.urls')), path('demo/', include('code_star_demo.urls'))]" >> mysite/urls.py
           echo "from code_star.routing import app" >> mysite/asgi.py
           echo "application = app(application)" >> mysite/asgi.py
