@@ -1,0 +1,98 @@
+{% extends 'code_star_demo/layout.html' %}
+
+{% block content %}
+<div class="prose prose-lg lg:prose-xl xl:prose-2xl m-auto mb-20 grid bg-transparent max-w-6xl px-4 py-8">
+  <h1>
+    Welcome to
+    <span class="bg-gradient-to-l from-sky-400 to-lime-500 bg-clip-text text-transparent">CodeStar</span>
+  </h1>
+
+  <p>
+    Unlock your coding potential with CodeStar, the advanced AI-powered coding assistant designed to enhance developer
+    productivity.
+  </p>
+
+  <h2>
+    Why
+    <span class="bg-gradient-to-r from-red-600 to-yellow-400 bg-clip-text text-transparent">CodeStar?</span>
+  </h2>
+
+  <div class="grid grid-cols-12 gap-8">
+    <div
+      class="group transition-all relative col-span-12 overflow-hidden rounded-xl border border-stone-300/75 p-6 hover:scale-110 hover:rounded-3xl hover:shadow-xl md:col-span-6">
+      <div
+        class="absolute scale-0 transition-all duration-700 group-hover:scale-100 bottom-4 right-8 -z-10 h-64 w-64 rounded-full bg-gradient-to-tr from-sky-400 to-pink-400 blur-3xl">
+      </div>
+      <h3>Intelligent Code Suggestions</h3>
+      <p>
+        CodeStar analyzes your coding patterns and provides real-time suggestions to help you write better code faster.
+        Say goodbye to tedious syntax errors and hello to seamless coding.
+      </p>
+
+      <a href="{% url 'code-star:completions:home' %}"
+        class="flex items-center justify-center gap-4 rounded-lg bg-sky-400 bg-gradient-to-r from-sky-400 to-lime-400 px-6 py-3 font-semibold uppercase tracking-wide text-white shadow-sm ring-1 ring-sky-500 transition-all hover:bg-sky-500 hover:to-violet-500 hover:ring-violet-500 focus:ring-8 focus:ring-sky-300 focus:ring-opacity-50 focus:ring-offset-2 focus:hover:ring-violet-300 active:scale-95">
+        <span>Learn more</span>
+
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-6">
+          <path d="m9 18 6-6-6-6" />
+        </svg>
+      </a>
+    </div>
+    <div
+      class="group transition-all relative col-span-12 overflow-hidden rounded-xl border border-stone-300/75 p-6 hover:scale-110 hover:rounded-3xl hover:shadow-xl md:col-span-6">
+      <div
+        class="absolute scale-0 transition-all duration-700 group-hover:scale-100 right-8 top-12 -z-10 h-64 w-64 rounded-full bg-gradient-to-r from-sky-400 to-lime-400 blur-3xl">
+      </div>
+      <h3>Natural Language Interactions</h3>
+      <p>
+        Communicate with CodeStar in plain English. Ask questions, request code snippets, or seek explanations, and
+        watch as CodeStar translates your queries into actionable coding solutions.
+      </p>
+
+      <a href="{% url 'code-star:chats:home' %}"
+        class="flex items-center justify-center gap-4 rounded-lg bg-orange-400 bg-gradient-to-r from-orange-400 to-yellow-400 px-6 py-3 font-semibold uppercase tracking-wide text-white shadow-sm ring-1 ring-orange-500 transition-all hover:bg-orange-500 hover:to-rose-500 hover:ring-rose-500 focus:ring-8 focus:ring-orange-300 focus:ring-opacity-50 focus:ring-offset-2 focus:hover:ring-rose-300 active:scale-95">
+        <span>Learn more</span>
+
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-6">
+          <path d="m9 18 6-6-6-6" />
+        </svg>
+      </a>
+    </div>
+    <div
+      class="group transition-all relative col-span-12 overflow-hidden rounded-xl border border-stone-300/75 p-6 hover:scale-110 hover:rounded-3xl hover:shadow-xl md:col-span-6">
+      <div
+        class="absolute scale-0 transition-all duration-700 group-hover:scale-100 left-20 top-4 -z-10 h-64 w-64 rounded-full bg-gradient-to-l from-red-600 to-yellow-400 blur-3xl">
+      </div>
+      <h3>Boost Your Productivity</h3>
+      <p>
+        With CodeStar by your side, you can focus on what truly matters—building innovative applications. Our AI
+        assistant streamlines your workflow, allowing you to complete tasks more efficiently.
+      </p>
+    </div>
+    <div
+      class="group transition-all relative col-span-12 overflow-hidden rounded-xl border border-stone-300/75 p-6 hover:scale-110 hover:rounded-3xl hover:shadow-xl md:col-span-6">
+      <div
+        class="absolute scale-0 transition-all duration-700 group-hover:scale-100 right-4 top-8 -z-10 h-64 w-64 rounded-full bg-gradient-to-r from-rose-600 to-orange-400 blur-3xl">
+      </div>
+      <h3>Learn and Grow</h3>
+      <p>
+        Whether you're a beginner or an experienced developer, CodeStar is here to help you learn. Get instant feedback
+        on your code and discover best practices to elevate your skills.
+      </p>
+    </div>
+  </div>
+
+  <h2>
+    Join the
+    <span class="bg-gradient-to-r from-sky-400 to-pink-400 bg-clip-text text-transparent">
+      Future
+    </span>
+    of Coding
+  </h2>
+  <p>
+    Experience the power of AI in your development process. Sign up for CodeStar today and transform the way you code!
+  </p>
+</div>
+{% endblock %}

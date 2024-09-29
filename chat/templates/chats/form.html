@@ -1,0 +1,26 @@
+{% extends 'chats/layout.html' %}
+
+{% block chats-content %}
+<div class="flex h-full flex-1 items-center justify-cetner">
+  <section class="prose prose-sky m-auto">
+    <h1>Create new chat</h1>
+
+    <form method="post" class="grid gap-4">
+      {% csrf_token %}
+
+      {{ form.as_div }}
+
+      <button type="submit"
+        class="flex items-center justify-center gap-4 rounded-lg bg-sky-400 px-6 py-3 font-semibold uppercase tracking-wide text-white shadow-sm ring-1 ring-sky-500 transition-all hover:bg-sky-500 hover:ring-sky-500 focus:ring-8 focus:ring-sky-300 focus:ring-opacity-50 focus:ring-offset-2 active:scale-95">
+        Submit
+      </button>
+    </form>
+  </section>
+</div>
+
+<script>
+  document.querySelectorAll('form > div').forEach(element => element.classList.add('grid', 'gap-1'))
+  document.querySelectorAll('.helptext').forEach(element => element.classList.add('text-xs', 'font-semibold', 'text-stone-400'))
+  document.querySelectorAll('input').forEach(element => element.classList.add('block', 'px-4', 'py-3', 'w-full', 'rounded-lg', 'shadow-sm', 'ring-1', 'ring-stone-300', 'border-transparent', 'transition-all', 'hover:ring-sky-500', 'focus:ring-4', 'focus:border-sky-400', 'focus:ring-sky-300', 'focus:ring-opacity-50', 'focus:ring-offset-2'))
+</script>
+{% endblock %}

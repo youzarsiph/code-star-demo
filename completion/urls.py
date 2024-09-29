@@ -10,4 +10,5 @@ app_name = "completions"
 
 urlpatterns = [
     path("", views.CompletionsHomeView.as_view(), name="home"),
+    path("editor/", views.CompletionView.as_view(), name="editor"),
 ]

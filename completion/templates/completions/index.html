@@ -1,0 +1,91 @@
+{% extends 'code_star_demo/layout.html' %}
+
+{% block content %}
+<div class="prose prose-lg grid m-auto lg:prose-xl xl:prose-2xl mb-20 max-w-6xl px-4 py-8">
+  <h1>
+    Experience the Power of
+    <span class="bg-gradient-to-r from-sky-400 to-lime-500 bg-clip-text text-transparent">Code Completions</span>
+    with
+    <span class="bg-gradient-to-r from-sky-400 to-pink-400 bg-clip-text text-transparent">CodeStar</span>
+  </h1>
+
+  <p>
+    CodeStar revolutionizes the way you code by providing intelligent code completions that adapt to your unique coding
+    style.
+  </p>
+
+  <a href="{% url 'code-star:completions:editor' %}"
+    class="flex items-center justify-center gap-4 rounded-lg bg-orange-400 bg-gradient-to-r from-orange-400 to-yellow-400 px-6 py-3 font-semibold uppercase tracking-wide text-white shadow-sm ring-1 ring-orange-500 transition-all hover:bg-orange-500 hover:to-rose-500 hover:ring-rose-500 focus:ring-8 focus:ring-orange-300 focus:ring-opacity-50 focus:ring-offset-2 focus:hover:ring-rose-300 active:scale-95">
+    <span>Online demo</span>
+
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-6">
+      <path d="m9 18 6-6-6-6" />
+    </svg>
+  </a>
+
+
+  <h2>
+    <span class="bg-gradient-to-r from-red-600 to-yellow-400 bg-clip-text text-transparent">Smart Suggestions</span>
+    at Your Fingertips
+  </h2>
+
+  <div class="grid grid-cols-12 gap-8">
+    <div
+      class="col-span-12 rounded-xl bg-gradient-to-tr from-sky-400 to-pink-400 p-6 text-white shadow-sm md:col-span-6">
+      <h3 class="text-white">Context-Aware Completions</h3>
+      <p>
+        CodeStar understands the context of your code, offering relevant suggestions that fit seamlessly into your
+        workflow. Whether you're writing a function, class, or complex algorithm, CodeStar is there to assist you every
+        step of the way.
+      </p>
+    </div>
+    <div
+      class="col-span-12 rounded-xl bg-gradient-to-l from-sky-400 to-lime-400 p-6 text-white shadow-sm md:col-span-6">
+      <h3 class="text-white">Speed Up Your Development</h3>
+      <p>
+        With CodeStar&apos;s lightning-fast code completions, you can reduce the time spent on repetitive tasks. Our AI
+        analyzes your previous code and predicts what you need next, allowing you to focus on creativity and
+        problem-solving.
+      </p>
+    </div>
+    <div
+      class="col-span-12 rounded-xl bg-gradient-to-l from-red-600 to-yellow-400 p-6 text-white shadow-sm md:col-span-6">
+      <h3 class="text-white">Speed Up Your Development</h3>
+      <p>
+        With CodeStar&apos;s lightning-fast code completions, you can reduce the time spent on repetitive tasks. Our AI
+        analyzes your previous code and predicts what you need next, allowing you to focus on creativity and
+        problem-solving.
+      </p>
+    </div>
+    <div
+      class="col-span-12 rounded-xl bg-gradient-to-r from-rose-600 to-orange-400 p-6 text-white shadow-sm md:col-span-6">
+      <h3 class="text-white">Learn as You Code</h3>
+      <p>
+        Each suggestion comes with explanations and best practices, helping you learn and improve your coding skills in
+        real-time. CodeStar not only completes your code but also educates you along the way.
+      </p>
+    </div>
+    <div class="col-span-12 rounded-xl bg-gradient-to-r from-green-400 to-cyan-400 p-6 text-white shadow-sm">
+      <h3 class="text-white">Multi-Language Support</h3>
+      <p>
+        Whether you&apos;re coding in Python, JavaScript, Java, or any other popular programming language, CodeStar has
+        you
+        covered. Our AI is trained on a vast array of languages, ensuring you receive accurate and relevant completions.
+      </p>
+    </div>
+  </div>
+
+  <h2>
+    Transform Your
+    <span class="bg-gradient-to-r from-rose-600 to-orange-400 bg-clip-text text-transparent">Coding
+      Experience
+    </span>
+  </h2>
+
+  <p>
+    Join the thousands of developers who have enhanced their productivity with CodeStar. Experience the future of
+    coding with intelligent code completions that empower you to write better code, faster.
+  </p>
+</div>
+{% endblock %}

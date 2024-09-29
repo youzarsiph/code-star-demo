@@ -1,9 +1,11 @@
 """ API endpoints for code_star_demo.chats """
 
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views import generic
 
 from code_star.chats.models import Chat
+from code_star_demo.chat.mixins import ChatContextMixin, OwnerFilterMixin, OwnerMixin
 
 
 # Create your viewsets here.
@@ -13,16 +15,29 @@ class ChatsHomeView(generic.TemplateView):
     template_name = "chats/index.html"
 
 
-class ChatCreateView(generic.CreateView):
+class ChatCreateView(
+    ChatContextMixin,
+    OwnerMixin,
+    LoginRequiredMixin,
+    generic.CreateView,
+):
     """Create a new chat"""
 
     model = Chat
     fields = ["title", "description"]
     template_name = "chats/form.html"
-    success_url = reverse_lazy("chats:list")
+    success_url = reverse_lazy("code-star:chats:list")
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
 
 
-class ChatListView(generic.ListView):
+class ChatListView(
+    OwnerFilterMixin,
+    LoginRequiredMixin,
+    generic.ListView,
+):
     """List all chats"""
 
     model = Chat
@@ -30,7 +45,12 @@ class ChatListView(generic.ListView):
     context_object_name = "chats"
 
 
-class ChatDetailView(generic.DetailView):
+class ChatDetailView(
+    ChatContextMixin,
+    OwnerFilterMixin,
+    LoginRequiredMixin,
+    generic.DetailView,
+):
     """Detail view for a chat"""
 
     model = Chat
@@ -38,18 +58,28 @@ class ChatDetailView(generic.DetailView):
     context_object_name = "chat"
 
 
-class ChatUpdateView(generic.UpdateView):
+class ChatUpdateView(
+    ChatContextMixin,
+    OwnerFilterMixin,
+    LoginRequiredMixin,
+    generic.UpdateView,
+):
     """Update a chat"""
 
     model = Chat
     fields = ["title", "description"]
     template_name = "chats/form.html"
-    success_url = reverse_lazy("chats:list")
+    success_url = reverse_lazy("code-star:chats:list")
 
 
-class ChatDeleteView(generic.DeleteView):
+class ChatDeleteView(
+    ChatContextMixin,
+    OwnerFilterMixin,
+    LoginRequiredMixin,
+    generic.DeleteView,
+):
     """Delete a chat"""
 
     model = Chat
     template_name = "chats/delete.html"
-    success_url = reverse_lazy("chats:list")
+    success_url = reverse_lazy("code-star:chats:list")

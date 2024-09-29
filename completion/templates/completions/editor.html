@@ -1,0 +1,110 @@
+{% extends 'code_star_demo/layout.html' %}
+
+{% block head %}
+<!-- Code Highlight -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="relative flex h-full w-full flex-col pb-12" style="font-family: 'JetBrains Mono', monospace;">
+  <div class="relative h-auto w-full flex-1">
+    <textarea id="editor" style="background-color: transparent;" placeholder="Start by typing here..."
+      class="bg-trasnparent absolute inset-0 z-10 p-4 text-transparent caret-stone-950 outline-none border-0 resize-none"
+      oninput="handleCodeInput()"></textarea>
+
+    <div class="h-full w-full">
+      <pre><code id="code" class="p-4" style="font-family: 'JetBrains Mono', monospace;"></code></pre>
+    </div>
+
+    <pre
+      class="absolute inset-0 -z-10"><code id="preview" class="nohighlight p-4 text-stone-400" style="font-family: 'JetBrains Mono', monospace;"></code></pre>
+  </div>
+
+  <div
+    class="absolute w-full z-20 bottom-0 inset-x-0 backdrop-blur flex items-center justify-between gap-4 border-t px-4 py-2">
+    <div id="status" class="flex items-center gap-4">
+      <span class="h-4 w-4 bg-green-500 rounded-full"></span> Online
+    </div>
+
+    <div>
+      <button onclick="handleCodeChange()"
+        class="font-bold bg-green-100 border border-green-400 text-green-500 px-2 py-1 rounded-full">
+        <kbd>Alt + C</kbd>
+      </button>
+      to invoke code completions
+    </div>
+  </div>
+</div>
+
+<script>
+  // Status indicator
+  const status = document.getElementById('status')
+
+  // Code highlight
+  const code = document.getElementById('code')
+  const editor = document.getElementById('editor')
+
+  // Re-highlight the code after change
+  const handleCodeInput = () => {
+    const content = hljs.highlightAuto(editor.value).value
+
+    code.removeAttribute('data-highlighted')
+    code.innerHTML = content
+
+    // Highlight the code
+    hljs.highlightAll()
+  }
+</script>
+
+<script>
+  // Code completions
+  const socket = new WebSocket(`ws://${window.location.host}/ws/completions/`);
+
+  // Handle close
+  socket.onclose = function (event) {
+    status.innerHTML = '<span class="h-4 w-4 bg-orange-500 rounded-full"></span> Offline'
+    console.log('WebSocket closed with code:', event.code, 'reason:', event.reason);
+  };
+
+  // Handle error
+  socket.onerror = function (error) {
+    status.innerHTML = '<span class="h-4 w-4 bg-red-500 rounded-full"></span> Error'
+    console.error('WebSocket error:', error);
+  };
+
+  // Handle message
+  socket.onmessage = function (e) {
+    const data = JSON.parse(e.data);
+
+    if (data.generating) {
+      status.innerHTML = '<span class="h-4 w-4 bg-sky-500 rounded-full animate-ping"></span> CodeStar is generating...'
+    } else {
+      status.innerHTML = '<span class="h-4 w-4 bg-green-500 rounded-full"></span> Online'
+    }
+
+    console.log(data);
+
+    editor.value = data.response
+
+    if (!data.generating) {
+      handleCodeInput()
+    }
+
+    // document.getElementById('preview').innerText = data.response
+  };
+
+  // Handle code change
+  const handleCodeChange = () => {
+    status.innerHTML = '<span class="h-4 w-4 bg-sky-500 rounded-full animate-ping"></span> CodeStar is generating...'
+    socket.send(JSON.stringify({ data: { prompt: editor.value } }))
+  }
+
+  // Invoke handle code on
+  document.addEventListener('keydown', function (event) {
+    if (event.altKey && event.key === 'c') {
+      handleCodeChange()
+    }
+  })
+</script>
+{% endblock %}

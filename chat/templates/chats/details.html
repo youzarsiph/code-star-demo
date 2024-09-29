@@ -1,0 +1,132 @@
+{% extends 'chats/layout.html' %}
+
+{% block head %}
+<script src="  https://cdnjs.cloudflare.com/ajax/libs/showdown/2.1.0/showdown.min.js"></script>
+{% endblock %}
+
+{% block chats-content %}
+<article class="relative h-full flex flex-col pt-16">
+  <header
+    class="absolute inset-x-0 top-0 flex items-center justify-between gap-4 px-4 py-2 shadow-sm backdrop-blur-3xl">
+    <div class="flex items-center gap-4">
+      <div class="h-12 w-12 rounded-full bg-stone-200"></div>
+      <div class="grid gap-0.5">
+        <h4 class="text-lg font-semibold">{{ chat.title }}</h4>
+        <span id="status" class="flex items-center gap-2 text-xs">
+          <span class="h-4 w-4 bg-green-500 rounded-full"></span> Online
+        </span>
+      </div>
+    </div>
+
+    <button class="rounded p-1 hover:bg-stone-100 focus:bg-stone-200 active:bg-stone-200" title="Toggle menu">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="size-6">
+        <circle cx="11" cy="11" r="8" />
+        <path d="m21 21-4.3-4.3" />
+      </svg>
+    </button>
+  </header>
+
+  <main id="messages" class="flex flex-1 flex-col gap-4 px-4 overflow-y-auto">
+    {% for message in chat.messages.all %}
+    <div class="flex items-center{% if message.role %} justify-end{% endif %}">
+      <div
+        class="flex rounded-xl {% if message.role %}bg-stone-100{% else%}bg-stone-900 text-stone-50{% endif %} px-4 py-2 shadow-sm">
+        <p class="text-lg">
+          {{ message.content }}
+        </p>
+      </div>
+    </div>
+    {% empty %}
+    <div class="prose m-auto flex flex-col items-center justify-center gap-4 h-full w-full">
+      <h2>Start chatting</h2>
+      <p>Start by typing a message</p>
+    </div>
+    {% endfor %}
+    <div id="new-message"></div>
+  </main>
+
+  <section class="flex items-center gap-4 p-4">
+    <textarea id="message" rows="1" placeholder="Message..."
+      class="block px-4 py-3 w-full rounded-lg shadow-sm ring-1 ring-stone-300 border-transparent transition-all hover:ring-sky-500 focus:ring-4 focus:border-sky-400 focus:ring-sky-300 focus:ring-opacity-50 focus:ring-offset-2"></textarea>
+
+    <button type="submit" id="chat-message-submit" title="Send"
+      class="flex items-center justify-center gap-4 rounded-lg bg-sky-400 bg-gradient-to-r from-sky-400 to-lime-400 px-6 py-3 font-semibold uppercase tracking-wide text-white shadow-sm ring-1 ring-sky-500 transition-all hover:bg-sky-500 hover:to-violet-500 hover:ring-violet-500 focus:ring-8 focus:ring-sky-300 focus:ring-opacity-50 focus:ring-offset-2 focus:hover:ring-violet-300 active:scale-95">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="size-6 text-white">
+        <path
+          d="M3.714 3.048a.498.498 0 0 0-.683.627l2.843 7.627a2 2 0 0 1 0 1.396l-2.842 7.627a.498.498 0 0 0 .682.627l18-8.5a.5.5 0 0 0 0-.904z" />
+        <path d="M6 12h16" />
+      </svg>
+    </button>
+  </section>
+</article>
+
+<script>
+  const m2h = new showdown.Converter();
+  const status = document.getElementById('status');
+  const messages = document.getElementById('messages');
+
+  // Connection
+  const socket = new WebSocket(`ws://${window.location.host}/ws/chats/{{ chat.id }}/`);
+
+  // Handle open
+  socket.onopen = function (event) {
+    status.innerHTML = '<span class="h-4 w-4 bg-green-500 rounded-full"></span> Online'
+  };
+
+  // Handle close
+  socket.onclose = function (event) {
+    status.innerHTML = '<span class="h-4 w-4 bg-orange-500 rounded-full"></span> Offline'
+    console.log('WebSocket closed with code:', event.code, 'reason:', event.reason);
+  };
+
+  // Handle error
+  socket.onerror = function (error) {
+    status.innerHTML = '<span class="h-4 w-4 bg-orange-500 rounded-full"></span> Offline'
+    console.error('WebSocket error:', error);
+  };
+
+  // Handle message
+  socket.onmessage = function (e) {
+    const response = JSON.parse(e.data);
+    const data = response.data;
+
+    console.log(response);
+
+    if (response.generating) {
+      status.innerHTML = '<span class="h-4 w-4 bg-sky-500 rounded-full animate-ping"></span> CodeStar is generating...'
+    } else {
+      status.innerHTML = '<span class="h-4 w-4 bg-green-500 rounded-full"></span> Online'
+    }
+
+    const message = document.createElement('div')
+    message.classList = `flex items-center ${data.role ? 'justify-end' : ''}`
+    message.innerHTML = `<div class="flex rounded-xl ${data.role ? 'bg-stone-100' : 'bg-stone-900 text-stone-50'} px-4 py-2 shadow-sm"><p class="text-lg">${data.content}</p></div>`
+
+    const newMsg = document.createElement('div')
+    newMsg.setAttribute('id', 'new-message')
+
+    document.getElementById('new-message').replaceWith(message, newMsg)
+  };
+
+  document.querySelector('#message').onkeyup = function (e) {
+    if (e.keyCode === 13) {  // enter, return
+      document.querySelector('#chat-message-submit').click();
+    }
+  };
+
+  document.querySelector('#chat-message-submit').onclick = function (e) {
+    const messageInputDom = document.querySelector('#message');
+
+    const message = messageInputDom.value;
+
+    socket.send(JSON.stringify({
+      'type': 'message_received',
+      'data': { content: message }
+    }));
+
+    messageInputDom.value = '';
+  };
+</script>
+{% endblock %}

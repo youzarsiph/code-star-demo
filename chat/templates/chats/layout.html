@@ -1,0 +1,59 @@
+{% extends 'code_star_demo/layout.html' %}
+
+{% block content %}
+<div class="grid h-full grid-cols-12 gap-4">
+  <aside class="col-span-12 hidden gap-4 p-4 lg:col-span-4 lg:flex lg:flex-col">
+    <div class="flex items-center justify-between gap-4">
+      <h2 class="text-xl font-semibold">Chats</h2>
+
+      <div class="flex items-center gap-4">
+        <a href="{% url 'code-star:chats:create' %}"
+          class="rounded p-1 hover:bg-stone-100 focus:bg-stone-200 active:bg-stone-200" title="New chat">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" class="size-5">
+            <path d="M5 12h14" />
+            <path d="M12 5v14" />
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <form class="flex w-full items-center gap-2">
+      <input type="search" name="search" placeholder="Search chats..."
+        class="mt-1 block w-full flex-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
+      <button type="submit" class="rounded p-1 hover:bg-stone-100 focus:bg-stone-200 active:bg-stone-200"
+        title="Search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round" class="size-5">
+          <circle cx="11" cy="11" r="8" />
+          <path d="m21 21-4.3-4.3" />
+        </svg>
+      </button>
+    </form>
+
+    <ol class="grid gap-4">
+      {% for chat in chats %}
+      <li>
+        <a href="{% url 'code-star:chats:details' chat.id %}"
+          class="flex items-center gap-4 rounded-xl px-4 py-2 hover:bg-stone-100">
+          <div class="h-16 w-16 rounded-full bg-stone-200"></div>
+          <div class="grid flex-1 gap-1">
+            <div class="flex items-center justify-between gap-2">
+              <h4 class="text-lg font-semibold">{{ chat.title }}</h4>
+              <span class="text-xs">{{ chat.created_at }}</span>
+            </div>
+            <p class="text-sm">{{ chat.description }}</p>
+          </div>
+        </a>
+      </li>
+      {% empty %}
+      <p class="text-sm font-semibold">Click plus button to start chatting</p>
+      {% endfor %}
+    </ol>
+  </aside>
+
+  <main class="col-span-12 overflow-y-auto lg:col-span-8">
+    {% block chats-content %}{% endblock %}
+  </main>
+</div>
+{% endblock %}
